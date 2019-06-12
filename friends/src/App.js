@@ -10,10 +10,14 @@ function App() {
   const [friendsToDisplay, setFriendsToDisplay] = useState([]);
 
   const getFriends = async () => {
-    const url = "http://localhost:5000/friends";
-    const friendsData = await axios.get(url);
-    setFriendList(friendsData.data);
-    setFriendsToDisplay(friendsData.data);
+    try {
+      const url = "http://localhost:5000/friends";
+      const friendsData = await axios.get(url);
+      setFriendList(friendsData.data);
+      setFriendsToDisplay(friendsData.data); 
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onSearchFriend = (event) => {
