@@ -29,10 +29,9 @@ function App() {
     }
   };
 
-  const onSearchFriend = event => {
-    const inputForm = event.target.value.toLowerCase();
+  const searchFriend = name => {
     const filteredFriends = friendList.filter(friend =>
-      friend.name.toLowerCase().includes(inputForm)
+      friend.name.toLowerCase().includes(name)
     );
     setFriendsToDisplay(filteredFriends);
   };
@@ -43,7 +42,7 @@ function App() {
 
   return (
     <div className="App">
-      <SearchFriend onSearch={onSearchFriend} />
+      <SearchFriend onSearch={searchFriend} />
       <AddFriend />
       <FriendsList friends={friendsToDisplay} />
     </div>
