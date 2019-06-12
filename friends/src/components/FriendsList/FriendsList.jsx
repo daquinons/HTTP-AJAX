@@ -11,19 +11,19 @@ const FriendsList = ({ friends }) => {
           <p>Email: {friend.email}</p>
           <hr />
         </div>
-        
       ))}
     </ul>
   );
 };
 
 FriendsList.propTypes = {
-  friends: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    age: PropTypes.number.isRequired,
-    email: PropTypes.string.isRequired
-  })).isRequired
-}
-
+  friends: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      age: PropTypes.number.isRequired,
+      email: PropTypes.string.isRequired
+    })
+  ).isRequired
+};
 
 export default FriendsList;
