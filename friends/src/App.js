@@ -8,28 +8,39 @@ import "./App.css";
 function App() {
   const [friendList, setFriendList] = useState([]);
   const [friendsToDisplay, setFriendsToDisplay] = useState([]);
+  const URL = "http://localhost:5000/friends";
 
   const getFriends = async () => {
     try {
-      const url = "http://localhost:5000/friends";
-      const friendsData = await axios.get(url);
+      const friendsData = await axios.get(URL);
       setFriendList(friendsData.data);
-      setFriendsToDisplay(friendsData.data); 
+      setFriendsToDisplay(friendsData.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const onSearchFriend = (event) => {
+  const AddNewFriend = async friend => {
+    try {
+      await axios.post(URL, friend);
+      await getFriends();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onSearchFriend = event => {
     const inputForm = event.target.value.toLowerCase();
-    const filteredFriends = friendList.filter(friend => friend.name.toLowerCase().includes(inputForm));
+    const filteredFriends = friendList.filter(friend =>
+      friend.name.toLowerCase().includes(inputForm)
+    );
     setFriendsToDisplay(filteredFriends);
-  }
+  };
 
   useEffect(() => {
     getFriends();
   }, []);
-  
+
   return (
     <div className="App">
       <SearchFriend onSearch={onSearchFriend} />
