@@ -20,7 +20,7 @@ function App() {
     }
   };
 
-  const AddNewFriend = async friend => {
+  const addNewFriend = async friend => {
     try {
       await axios.post(URL, friend);
       await getFriends();
@@ -43,7 +43,7 @@ function App() {
   return (
     <div className="App">
       <SearchFriend onSearch={searchFriend} />
-      <AddFriend />
+      <AddFriend onAddFriend={addNewFriend} />
       <FriendsList friends={friendsToDisplay} />
     </div>
   );
