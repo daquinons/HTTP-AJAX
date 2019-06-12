@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SearchFriend from "./components/SearchFriend/SearchFriend";
+import AddFriend from "./components/AddFriend/AddFriend";
 import FriendsList from "./components/FriendsList/FriendsList";
 import "./App.css";
 
@@ -28,6 +29,7 @@ function App() {
   return (
     <div className="App">
       <SearchFriend onSearch={onSearchFriend} />
+      <AddFriend />
       <FriendsList friends={friendsToDisplay} />
     </div>
   );
