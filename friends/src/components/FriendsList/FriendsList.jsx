@@ -1,7 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-const FriendsList = props => {
-  const { friends } = props;
+const FriendsList = ({ friends }) => {
   return (
     <ul>
       {friends.map(friend => (
@@ -16,5 +16,14 @@ const FriendsList = props => {
     </ul>
   );
 };
+
+FriendsList.propTypes = {
+  friends: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    age: PropTypes.number.isRequired,
+    email: PropTypes.string.isRequired
+  })).isRequired
+}
+
 
 export default FriendsList;
