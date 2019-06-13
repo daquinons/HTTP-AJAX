@@ -29,6 +29,22 @@ function App() {
     }
   };
 
+  const updateFriend = async friend => {
+    try {
+      await axios.put(`${URL}/${friend.id}`, { name: friend.name, age: friend.age, email: friend.email })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const deleteFriend = async friend => {
+    try {
+      await axios.delete(`${URL}/${friend.id}`)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const searchFriend = name => {
     const filteredFriends = friendList.filter(friend =>
       friend.name.toLowerCase().includes(name)
