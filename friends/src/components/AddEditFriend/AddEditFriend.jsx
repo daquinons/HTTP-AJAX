@@ -1,22 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const AddFriend = props => {
-  const { onAddFriend } = props;
+const AddEditFriend = props => {
+  const { onAddFriend, editableFriend, onEditFriend, onCancelEdit } = props;
   const [formInput, setFormInput] = useState({
     name: "",
     age: "",
     email: ""
   });
 
+  useEffect(() => {
+    setFormInput({
+      name: editableFriend ? editableFriend.name : "",
+      age: editableFriend ? editableFriend.age : "",
+      email: editableFriend ? editableFriend.email : ""
+    });
+  }, [editableFriend]);
+
   const onSubmitForm = event => {
     event.preventDefault();
-    const newFriend = {
+    const friend = {
+      ...editableFriend,
       name: formInput.name,
       age: Number(formInput.age),
       email: formInput.email
     };
-
-    onAddFriend(newFriend);
+    if (editableFriend) {
+      onEditFriend(friend)
+    } else {
+      onAddFriend(friend);
+    }
+    
     setFormInput({
       name: "",
       age: "",
@@ -33,9 +46,15 @@ const AddFriend = props => {
     });
   };
 
+  const getText = () => {
+    return editableFriend ? "Edit Friend" : "Add Friend"
+  }
+
+  const cancelButton = editableFriend ? <button onClick={onCancelEdit}>Cancel</button> : null;
+
   return (
     <div className="add-friend-form">
-      <p>Add a new friend:</p>
+      <p>{getText()}:</p>
       <form onSubmit={onSubmitForm}>
         <input
           type="text"
@@ -61,10 +80,12 @@ const AddFriend = props => {
           placeholder="Email"
           onChange={onChangeInput}
         />
-        <button type="submit">Add Friend</button>
+        
+        <button type="submit">{getText()}</button>
+        {cancelButton}
       </form>
     </div>
   );
 };
 
-export default AddFriend;
+export default AddEditFriend;

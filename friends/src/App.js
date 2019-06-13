@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SearchFriend from "./components/SearchFriend/SearchFriend";
-import AddFriend from "./components/AddFriend/AddFriend";
+import AddEditFriend from "./components/AddEditFriend/AddEditFriend";
 import FriendsList from "./components/FriendsList/FriendsList";
 import "./App.css";
 
 function App() {
   const [friendList, setFriendList] = useState([]);
   const [friendsToDisplay, setFriendsToDisplay] = useState([]);
+  const [editableFriend, setEditableFriend] = useState(undefined);
   const URL = "http://localhost:5000/friends";
 
   const getFriends = async () => {
@@ -31,7 +32,10 @@ function App() {
 
   const updateFriend = async friend => {
     try {
-      await axios.put(`${URL}/${friend.id}`, { name: friend.name, age: friend.age, email: friend.email })
+      console.log(`${URL}/${friend.id}`);
+      await axios.put(`${URL}/${friend.id}`, { name: friend.name, age: friend.age, email: friend.email });
+      await getFriends();
+      cancelEdit();
     } catch (error) {
       console.log(error);
     }
@@ -53,6 +57,14 @@ function App() {
     setFriendsToDisplay(filteredFriends);
   };
 
+  const chooseEditableFriend = friend => {
+    setEditableFriend(friend);
+  }
+
+  const cancelEdit = () => {
+    setEditableFriend(undefined);
+  }
+
   useEffect(() => {
     getFriends();
   }, []);
@@ -60,8 +72,8 @@ function App() {
   return (
     <div className="App">
       <SearchFriend onSearch={searchFriend} />
-      <AddFriend onAddFriend={addNewFriend} />
-      <FriendsList friends={friendsToDisplay} onDelete={deleteFriend} />
+      <AddEditFriend onAddFriend={addNewFriend} editableFriend={editableFriend} onEditFriend={updateFriend} onCancelEdit={cancelEdit} />
+      <FriendsList friends={friendsToDisplay} onDelete={deleteFriend} onClickEdit={chooseEditableFriend} />
     </div>
   );
 }
