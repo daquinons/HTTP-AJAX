@@ -1,15 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import FriendCard from "../FriendCard/FriendCard";
 
-const FriendsList = ({ friends }) => {
+const FriendsList = ({ friends, onDelete }) => {
   return (
     <ul>
       {friends.map(friend => (
         <div key={friend.id} className="friend-info">
-          <li>{friend.name}</li>
-          <p>Age: {friend.age}</p>
-          <p>Email: {friend.email}</p>
-          <hr />
+          <FriendCard friend={friend} onDelete={onDelete} />
         </div>
       ))}
     </ul>

@@ -39,7 +39,8 @@ function App() {
 
   const deleteFriend = async friend => {
     try {
-      await axios.delete(`${URL}/${friend.id}`)
+      await axios.delete(`${URL}/${friend.id}`);
+      await getFriends();
     } catch (error) {
       console.log(error);
     }
@@ -60,7 +61,7 @@ function App() {
     <div className="App">
       <SearchFriend onSearch={searchFriend} />
       <AddFriend onAddFriend={addNewFriend} />
-      <FriendsList friends={friendsToDisplay} />
+      <FriendsList friends={friendsToDisplay} onDelete={deleteFriend} />
     </div>
   );
 }
