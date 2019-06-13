@@ -4,13 +4,17 @@ import FriendCard from "../FriendCard/FriendCard";
 
 const FriendsList = ({ friends, onDelete, onClickEdit, onCancelEdit }) => {
   return (
-    <ul>
+    <>
       {friends.map(friend => (
         <div key={friend.id} className="friend-info">
-          <FriendCard friend={friend} onDelete={onDelete} onClickEdit={onClickEdit} />
+          <FriendCard
+            friend={friend}
+            onDelete={onDelete}
+            onClickEdit={onClickEdit}
+          />
         </div>
       ))}
-    </ul>
+    </>
   );
 };
 

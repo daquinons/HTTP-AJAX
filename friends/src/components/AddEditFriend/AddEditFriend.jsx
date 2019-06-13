@@ -1,4 +1,23 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+
+const StyledDiv = styled.div`
+  background-color: white;
+  height: 85px;
+  width: 75%;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  border: 1px solid #dddfe2;
+  border-radius: 4px;
+
+  input {
+    margin-right: 10px;
+  }
+
+  h3 {
+    color: #365899;
+  }
+`;
 
 const AddEditFriend = props => {
   const { onAddFriend, editableFriend, onEditFriend, onCancelEdit } = props;
@@ -25,11 +44,11 @@ const AddEditFriend = props => {
       email: formInput.email
     };
     if (editableFriend) {
-      onEditFriend(friend)
+      onEditFriend(friend);
     } else {
       onAddFriend(friend);
     }
-    
+
     setFormInput({
       name: "",
       age: "",
@@ -46,15 +65,15 @@ const AddEditFriend = props => {
     });
   };
 
-  const getText = () => {
-    return editableFriend ? "Edit Friend" : "Add Friend"
-  }
+  const textTitle = editableFriend ? "Edit Friend" : "Add Friend";
 
-  const cancelButton = editableFriend ? <button onClick={onCancelEdit}>Cancel</button> : null;
+  const cancelButton = editableFriend ? (
+    <button onClick={onCancelEdit}>Cancel</button>
+  ) : null;
 
   return (
-    <div className="add-friend-form">
-      <p>{getText()}:</p>
+    <StyledDiv className="add-friend-form">
+      <h3>{textTitle}</h3>
       <form onSubmit={onSubmitForm}>
         <input
           type="text"
@@ -80,11 +99,11 @@ const AddEditFriend = props => {
           placeholder="Email"
           onChange={onChangeInput}
         />
-        
-        <button type="submit">{getText()}</button>
+
+        <button type="submit">{textTitle}</button>
         {cancelButton}
       </form>
-    </div>
+    </StyledDiv>
   );
 };
 
