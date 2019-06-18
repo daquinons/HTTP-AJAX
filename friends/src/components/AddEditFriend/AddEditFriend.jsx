@@ -1,22 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
-const AddFriend = props => {
-  const { onAddFriend } = props;
+const StyledDiv = styled.div`
+  background-color: white;
+  height: 85px;
+  width: 75%;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  border: 1px solid #dddfe2;
+  border-radius: 4px;
+
+  input {
+    margin-right: 10px;
+  }
+
+  h3 {
+    color: #365899;
+  }
+`;
+
+const AddEditFriend = props => {
+  const { onAddFriend, editableFriend, onEditFriend, onCancelEdit } = props;
   const [formInput, setFormInput] = useState({
     name: "",
     age: "",
     email: ""
   });
 
+  useEffect(() => {
+    setFormInput({
+      name: editableFriend ? editableFriend.name : "",
+      age: editableFriend ? editableFriend.age : "",
+      email: editableFriend ? editableFriend.email : ""
+    });
+  }, [editableFriend]);
+
   const onSubmitForm = event => {
     event.preventDefault();
-    const newFriend = {
+    const friend = {
+      ...editableFriend,
       name: formInput.name,
       age: Number(formInput.age),
       email: formInput.email
     };
+    if (editableFriend) {
+      onEditFriend(friend);
+    } else {
+      onAddFriend(friend);
+    }
 
-    onAddFriend(newFriend);
     setFormInput({
       name: "",
       age: "",
@@ -33,9 +65,15 @@ const AddFriend = props => {
     });
   };
 
+  const textTitle = editableFriend ? "Edit Friend" : "Add Friend";
+
+  const cancelButton = editableFriend ? (
+    <button onClick={onCancelEdit}>Cancel</button>
+  ) : null;
+
   return (
-    <div className="add-friend-form">
-      <p>Add a new friend:</p>
+    <StyledDiv className="add-friend-form">
+      <h3>{textTitle}</h3>
       <form onSubmit={onSubmitForm}>
         <input
           type="text"
@@ -61,10 +99,12 @@ const AddFriend = props => {
           placeholder="Email"
           onChange={onChangeInput}
         />
-        <button type="submit">Add Friend</button>
+
+        <button type="submit">{textTitle}</button>
+        {cancelButton}
       </form>
-    </div>
+    </StyledDiv>
   );
 };
 
-export default AddFriend;
+export default AddEditFriend;

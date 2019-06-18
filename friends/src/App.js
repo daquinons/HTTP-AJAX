@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Header from "./components/Header/Header";
 import SearchFriend from "./components/SearchFriend/SearchFriend";
-import AddFriend from "./components/AddFriend/AddFriend";
+import AddEditFriend from "./components/AddEditFriend/AddEditFriend";
 import FriendsList from "./components/FriendsList/FriendsList";
 import "./App.css";
 
 function App() {
   const [friendList, setFriendList] = useState([]);
   const [friendsToDisplay, setFriendsToDisplay] = useState([]);
+  const [editableFriend, setEditableFriend] = useState(undefined);
   const URL = "http://localhost:5000/friends";
 
   const getFriends = async () => {
@@ -29,11 +31,43 @@ function App() {
     }
   };
 
+  const updateFriend = async friend => {
+    try {
+      console.log(`${URL}/${friend.id}`);
+      await axios.put(`${URL}/${friend.id}`, {
+        name: friend.name,
+        age: friend.age,
+        email: friend.email
+      });
+      await getFriends();
+      cancelEdit();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteFriend = async friend => {
+    try {
+      await axios.delete(`${URL}/${friend.id}`);
+      await getFriends();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const searchFriend = name => {
     const filteredFriends = friendList.filter(friend =>
       friend.name.toLowerCase().includes(name)
     );
     setFriendsToDisplay(filteredFriends);
+  };
+
+  const chooseEditableFriend = friend => {
+    setEditableFriend(friend);
+  };
+
+  const cancelEdit = () => {
+    setEditableFriend(undefined);
   };
 
   useEffect(() => {
@@ -42,9 +76,20 @@ function App() {
 
   return (
     <div className="App">
-      <SearchFriend onSearch={searchFriend} />
-      <AddFriend onAddFriend={addNewFriend} />
-      <FriendsList friends={friendsToDisplay} />
+      <Header>
+        <SearchFriend onSearch={searchFriend} />
+      </Header>
+      <AddEditFriend
+        onAddFriend={addNewFriend}
+        editableFriend={editableFriend}
+        onEditFriend={updateFriend}
+        onCancelEdit={cancelEdit}
+      />
+      <FriendsList
+        friends={friendsToDisplay}
+        onDelete={deleteFriend}
+        onClickEdit={chooseEditableFriend}
+      />
     </div>
   );
 }
